@@ -86,6 +86,8 @@ ERD
 
     https://github.com/user-attachments/assets/95428ce9-f199-4305-b528-c2f0c2cb75f0
 
+5. 선별결과 MQTT로 전달 기능 추가
+
 ##### MQTT Subscriber
 - WPF 과목에서 사용했던 MQTT Subscriber 그대로 사용
 - SmartHome 작업했던 부분 수정 DB
