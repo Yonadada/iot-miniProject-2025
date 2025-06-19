@@ -88,13 +88,30 @@ ERD
 
 5. 선별결과 MQTT로 전달 기능 추가
 
+    <img src="/image/mp0004.png" width="650">
 ##### MQTT Subscriber
 - WPF 과목에서 사용했던 MQTT Subscriber 그대로 사용
-- SmartHome 작업했던 부분 수정 DB
+- WpfMqttSubApp 프로젝트 가져오기
+- SmartHome 작업했던 부분 수정 DB  저장 부분 변경 
 
+1. 서비스 실행 중 확인 
+    - 콘솔에서 `telnet + ip주소 + 포트번호`  > 화면이 전환되면 접속성공!
+
+2. MainViewModel.cs 현재 Publish에 맞게 수정 
+    - BrokerIP, Topic,...
+3. EntitiyFramwork 사용, Database 테이블 모델화( DBFirst)
+4. config.json 파일, 설정 파일 로드 클래스 작업 
+5. 구독 결과
+
+    <img src="/image/mp0005.png" width="650">
+
+##### WPF 공정관리 앱 개발 
+- 기본적인 DB 관리 앱 + 실시간 공정 모니터링 + 리포트 시각화 
+
+1. CommunityToolKit.Mvvm, MahApps.Metro 초기 설정 
 
 #### 파이썬 AI + ASP.NET 연동
-- 
+- 참조소스 
 
 ### 파이널 프로젝트
 
