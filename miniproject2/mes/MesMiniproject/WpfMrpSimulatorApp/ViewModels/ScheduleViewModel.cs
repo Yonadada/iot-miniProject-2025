@@ -11,7 +11,7 @@ using WpfMrpSimulatorApp.Models;
 
 namespace WpfMrpSimulatorApp.ViewModels
 {
-    public partial class SettingViewModel : ObservableObject
+    public partial class ScheduleViewModel : ObservableObject
     {
         // readonly 생성자에서 할당하고 나면 그 이후에 값 변경 불가
         private readonly IDialogCoordinator dialogCoordinator;
@@ -120,7 +120,7 @@ namespace WpfMrpSimulatorApp.ViewModels
         }
         #endregion
 
-        public SettingViewModel(IDialogCoordinator coordinator)
+        public ScheduleViewModel(IDialogCoordinator coordinator)
         {
             this.dialogCoordinator = coordinator; //파라미터 값으로 초기화
             LoadGridFromDb(); // DB에서 그리드 데이터 로드해서 그리드에 출력
@@ -186,9 +186,6 @@ namespace WpfMrpSimulatorApp.ViewModels
 
             //IsUpdate 가 False 면 신규,  True면 수정
             IsUpdate = false;
-
-            CanSave = true; 
-            CanRemove = false; // 이게 없으면 수정 후 신규를 눌러도 활성화 되어있다 - 250623 수정 yw
         }
 
         #region View 버튼클릭 메서드

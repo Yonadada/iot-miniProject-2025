@@ -49,11 +49,12 @@
                 </Button.ContentTemplate>
             </Button>
 
-                <Button Content="공정계획" FontSize="12" Background="#D9CBAF" Margin="5">
+                <Button Content="공정계획" FontSize="12" Background="#D9CBAF" Margin="5"
+                        Command="{Binding SetScheduleCommand}">
                 <Button.ContentTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
-                            <Label Content="{Binding}" Foreground="White" VerticalAlignment="Center" />
+                            <Label Content="{Binding }" Foreground="White" VerticalAlignment="Center" />
                             <iconPacks:PackIconVaadinIcons Kind="Calendar" Foreground="White"/>
                         </StackPanel>
                     </DataTemplate>
