@@ -16,6 +16,7 @@
     - SmartFactory : MES와 관점의 차이
         - MES는 실시간으로 처리하는 시스템. 소프트웨어
         - SF는 비전, 시각화(실시간). IoT 장비, 클라우드, AI + 시스템
+<hr>
 
 ##### 작업 개요
 <img src="../image/mp0001.png" width="600">
@@ -27,6 +28,7 @@
 - 공정관리 시스템 : WPF 공정관리 모니터링 및 계획, 리포트
 
 <img src="../image/mp0002.png" width="600">
+<hr>
 
 ERD
 
@@ -47,6 +49,7 @@ ERD
 
 - 2019년도 학생 작품 영상 - https://www.youtube.com/watch?v=qo5e_HCUAl8
 - 유튜브에서 sorting machine으로 검색
+<hr>
 
 ##### 양품/불량품 선별용 모터장비
 - [컨베이너벨트]() - 선별을 위한 기반 인프라
@@ -59,6 +62,7 @@ ERD
 
 ##### 양품/불량품 선별 예
 - 음식 포장 검사, 볼트 조립 검사, 납땜 공정, 액체 충전 검사, ...
+<hr>
 
 ##### 공정관리 ERD
 1. MySQL Workbench
@@ -70,6 +74,7 @@ ERD
 
     <img src="../image/mp0003.png" width="600"> 
 
+<hr>
 
 ##### IoT 디바이스 시뮬레이터
 - 라즈베리파이, 아두이노 등 사용. 디바이스 구성 및 구현
@@ -89,6 +94,8 @@ ERD
 5. 선별결과 MQTT로 전달 기능 추가
 
     <img src="/image/mp0004.png" width="650">
+<hr>
+
 ##### MQTT Subscriber
 - WPF 과목에서 사용했던 MQTT Subscriber 그대로 사용
 - WpfMqttSubApp 프로젝트 가져오기
@@ -104,6 +111,7 @@ ERD
 5. 구독 결과
 
     <img src="/image/mp0005.png" width="650">
+<hr>
 
 ##### WPF 공정관리 앱 개발 
 - 기본적인 DB 관리 앱 + 실시간 공정 모니터링 + 리포트 시각화 
@@ -123,8 +131,25 @@ ERD
     - SettingView.Xaml 복사 후 이름 변경. 클래스명 변경
     - SettingViewModel.cs 복사 후 이름 변경, 클래스명 변경
 
-
 10. ScheduleView 데이터 그리드, 입력양식 수정
+
+11. EntityFramwork 용 패키지 설치
+    - Microsoft.EntityFrameworkCore
+    - Microsoft.EntityFrameworkCore.Tools
+    - PomeloEntityFramworkCore.MySql
+
+    ```shell
+    Scaffold-DbContext "Server=localhost;Database=miniproject;Uid=root;Password=12345;Charset=utf8" Pomelo.EntityFrameworkCore.MySql -OutputDir Models -Force -Context IoTDbContext
+    ```
+
+12. ScheduleViewModel EntityFramework DB 연동 처리
+
+    <img src="/image/mp0007.png" width="600">
+
+13. MonitoringView, MonitoringViewModel 생성
+14. WpfIotSimulatorApp 화면 이전
+15. Monitoring DB 연동, MQTT 통신, 애니메이션 작업
+16. MQTT러 전송된 공정 성공/실패 여부 DB 저장 작업
 
 #### 파이썬 AI + ASP.NET 연동
 - 참조소스 

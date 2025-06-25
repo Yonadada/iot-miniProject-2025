@@ -5,6 +5,7 @@ using MahApps.Metro.Controls.Dialogs;
 using System.Windows;
 using System.Windows.Controls;
 using WpfMrpSimulatorApp.Helpers;
+using WpfMrpSimulatorApp.Models;
 using WpfMrpSimulatorApp.Views;
 
 namespace WpfMrpSimulatorApp.ViewModels
@@ -70,6 +71,17 @@ namespace WpfMrpSimulatorApp.ViewModels
         {
             var viewModel = new ScheduleViewModel(Common.DIALOGCOORDINATOR);
             var view = new ScheduleView
+            {
+                DataContext = viewModel,
+            };
+            CurrentView = view;
+        }
+
+        [RelayCommand]
+        public void GetMonitoring()
+        {
+            var viewModel = new MonitoringViewModel(Common.DIALOGCOORDINATOR);
+            var view = new MonitoringView
             {
                 DataContext = viewModel,
             };
