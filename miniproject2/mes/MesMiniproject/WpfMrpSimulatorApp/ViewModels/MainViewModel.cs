@@ -5,7 +5,6 @@ using MahApps.Metro.Controls.Dialogs;
 using System.Windows;
 using System.Windows.Controls;
 using WpfMrpSimulatorApp.Helpers;
-using WpfMrpSimulatorApp.Models;
 using WpfMrpSimulatorApp.Views;
 
 namespace WpfMrpSimulatorApp.ViewModels
@@ -14,9 +13,9 @@ namespace WpfMrpSimulatorApp.ViewModels
     {
         //다이얼로그 코디네이터 변수 선언
         private readonly IDialogCoordinator dialogCoordinator;
-
         private string _greeting;
         private UserControl _currentView;
+        public event Action? StartHmiRequested;
 
         public MainViewModel(IDialogCoordinator coordinator)
         {
@@ -36,7 +35,6 @@ namespace WpfMrpSimulatorApp.ViewModels
             get => _currentView;
             set => SetProperty(ref _currentView, value);
         }
-
 
         [RelayCommand]
         public async Task AppExit()
@@ -85,6 +83,8 @@ namespace WpfMrpSimulatorApp.ViewModels
             {
                 DataContext = viewModel,
             };
+            viewModel.StartHmiRequested += view.StartHmiAni; // 애니메이션 동작 연결 
+            viewModel.StartSensorCheckRequested += view.StartSensorCheck; // 센서 체크 이벤트 연결
             CurrentView = view;
         }
     }

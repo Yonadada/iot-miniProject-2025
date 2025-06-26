@@ -20,7 +20,8 @@ namespace WpfIoTSimulatorApp.ViewModels
         #region 뷰와 관계 없는 멤버변수
         private IMqttClient mqttClient;
         private string brokerHost;
-        private string mqttTopic;
+        private string mqttPubTopic;
+        private string mqttSubTopic;
         private string clientId;
         private int logNum; // 로그 메세지 순번 
 
@@ -34,8 +35,10 @@ namespace WpfIoTSimulatorApp.ViewModels
 
             //MQTT 브로커 설정
             brokerHost = "210.119.12.61"; // MQTT 브로커  본인 pc 호스트 주소 
-            mqttTopic = "yonadada/sf61/data"; //스마트팩토리 토픽
+            mqttPubTopic = "yonadada/sf61/data"; //스마트팩토리 토픽
+            mqttSubTopic = "yonadada/sf61/control"; // 모니터링에서 넘어오는 토픽
             clientId = "yonadada_IOT61"; // IOT 장비 번호
+
             logNum = 1; // 로그번호를 1부터 시작
 
             //MQTT 클라이언트 생성 및 초기화
@@ -92,13 +95,21 @@ namespace WpfIoTSimulatorApp.ViewModels
 
             // 테스트 메세지
             var message = new MqttApplicationMessageBuilder()
-                            .WithTopic(mqttTopic)
+                            .WithTopic(mqttPubTopic)
                             .WithPayload("IoT Sorting Simulator Connected")
                             .WithQualityOfServiceLevel(MQTTnet.Protocol.MqttQualityOfServiceLevel.ExactlyOnce)
                             .Build();   
             // MQTT 브로커로 전송!
             await mqttClient.PublishAsync(message);
             LogText = "--- MQTT 브로커로 메세지 전송 완료! ---";
+
+            await mqttClient.SubscribeAsync(new MqttTopicFilterBuilder().WithTopic(mqttSubTopic).Build());
+            mqttClient.ApplicationMessageReceivedAsync += MqttMessageReceivedAsync;
+        }
+
+        private Task MqttMessageReceivedAsync(MqttApplicationMessageReceivedEventArgs arg)
+        {
+            return Task.CompletedTask;
         }
 
 
