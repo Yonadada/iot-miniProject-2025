@@ -149,17 +149,19 @@ ERD
 13. MonitoringView, MonitoringViewModel 생성
 14. WpfIotSimulatorApp 화면 이전
 15. Monitoring DB 연동, MQTT 통신, 애니메이션 작업
-16. MQTT러 전송된 공정 성공/실패 여부 DB 저장 작업
+16. MQTT로 전송된 공정 성공/실패 여부 DB 저장 작업
     - 공정 계획 순번으로 DB  조회 
     - 기본 IoTSimulator 애니메이션 가져오기
     - Start 버튼 눌러서 IoT Simulator 동작시키고 동기화
     - 체크이후 성공/실패 결과 DB에 저장, 실시간 시각화
 
+    https://github.com/user-attachments/assets/b6272b8f-30a0-415c-a8f8-b45bd4fa57d3
+
 #### 추후 작업 (Miniproject 3)
 1. ReportView, ReportViewModel 작업
 2. MainView 상태표시줄 완성
 3. 예외처리
-4. 
+
 
 
 #### 파이썬 AI + ASP.NET 연동(MiniProject 3)
