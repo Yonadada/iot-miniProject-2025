@@ -45,7 +45,7 @@ namespace WpfIoTSimulatorApp.ViewModels
             LogText = "프로그램을 시작합니다...";
 
             //MQTT 브로커 설정
-            brokerHost = "210.119.12.61"; // MQTT 브로커  본인 pc 호스트 주소 
+            brokerHost = "192.168.0.2"; // MQTT 브로커  본인 pc 호스트 주소 
             mqttPubTopic = "yonadada/sf61/data"; //스마트팩토리 토픽
             mqttSubTopic = "yonadada/sf61/control"; // 모니터링에서 넘어오는 토픽
             clientId = "yonadada_IOT61"; // IOT 장비 번호
