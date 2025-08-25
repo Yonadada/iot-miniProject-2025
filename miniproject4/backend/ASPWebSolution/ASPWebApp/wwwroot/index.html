@@ -1,25 +1,26 @@
 ﻿<!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
     <meta charset="utf-8" />
     <title>물체인식 요청웹</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" 
+          integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
 </head>
 <body class="d-flex justify-content-center align-items-center vh-100">
     <div class="card" style="width: 680px;">
         <div id="result">
-            <img src="https://placehold.co/600x400" id="resultImg" class="card-img-top" alt="..." />
+            <img src="https://placehold.co/680x400" id="resultImg" class="card-img-top" alt="..." />
         </div>
         <div class="card-body">
             <h5 class="card-title">물체인식 요청</h5>
             <form method="post" enctype="multipart/form-data" id="fileUploadForm">
                 <div class="mb-2">
                     <label for="message" id="returnMsg" class="form-label">메세지</label>
-                    <input type="text" id="message" class="form-control" placeholder="메세지를 입력하세요" />
+                    <input type="text" id="message" name="message" class="form-control" placeholder="메시지 입력 요망" />
                 </div>
                 <div class="mb-2">
-                    <label form="imgFile" class="form-label">이미지 파일선택</label>
-                    <input type="file" id="imgFile" class="form-control" />
+                    <label for="file" class="form-label">이미지파일 선택</label>
+                    <input type="file" id="file" name="file" class="form-control" />
                 </div>
                 <div class="mb-2 d-flex justify-content-end">
                     <input type="button" class="btn btn-success" value="비동기 요청" />
@@ -27,69 +28,60 @@
             </form>
         </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
     <script>
         var button = document.querySelector("input[type=button]");
 
         button.addEventListener("click", function () {
-            var form = document.getElementById("fileUploadForm");       // 백엔드가 Python AI Server 라서 비동기(ajax) 로 전달
+            var form = document.getElementById("fileUploadForm");  // 백엔드가 Python AI Server라서 비동기(ajax)로 전달
             var form_data = new FormData(form);
 
-            // TODO : 이미지 파일이 선택되지 않은 경우 경고창 띄우기(validation check)
-            var message = document.getElementById("message").value.trim(); // 메세지 입력란에서 값 가져오기
-            var file = document.getElementById("imgFile").files[0]; // 파일 입력란에서 파일 가져오기
+            // TODO : 파일을 선택안했을 때 Validation check
+            var message = document.getElementById("message").value.trim();
+            var file = document.getElementById("file").files[0];
 
             if (!message || !file) {
-                alert("메세지 입력 또는 이미지 파일을 선택해주세요", "검증오류!");
-                return; // 메세지나 파일이 없으면 함수 종료
+                alert("메시지를 입력하거나 파일을 선택하세요", "검증오류");
+                return;
             }
 
+            button.disabled = true;   // Python AI server에서 객체인식이 끝나 결과 돌아올때까지 버튼 다시 클릭방지
 
+            var xhr = new XMLHttpRequest();  // json, xml 둘다 사용
 
-            button.diabled = true; // 버튼 비활성화 => Python AI Server 가  객체 인식이 끝나 결과가 돌아올때까지 버튼 다시 클릭 방지
+            // ASP.NET Core에서 net_service라는 API 컨트롤러로 전달
+            xhr.open('POST', 'http://localhost:5200/net_service', true);
 
-            var xhr = new XMLHttpRequest();         // XMLHttpRequest 객체 생성 => json, xml, text 등 다양한 형식으로 데이터를 주고 받을 수 있음
-
-            // APS.NET Core 에서 net_service라는 API 컨트롤러로 전달
-            xhr.open("POST", 'http://localhost:5200/net_service', true); // 비동기 요청 설정
-
-            // 여기가 핵심 !!!!!!!
             xhr.onload = function () {
-                if (xhr.status >= 200 && xhr.status < 300) {
-                    // 파이썬 AI 서버로부터 응답이 성공적으로 돌아온 경우 처리
-
-                    // 요청 성공 시 처리
+                if (xhr.status >= 200 && xhr.status < 300) { // 제대로 처리된 것
+                    // 핵심!!! Python AI Server 에서 리턴
                     var response = JSON.parse(xhr.responseText);
-
                     var returnMsg = document.getElementById("returnMsg");
-                    returnMsg.innerHTML = "메세지 /" + response.message; // 서버로부터 받은 메시지 표시
+                    returnMsg.innerHTML = "메시지 / " + response.message;
+                    var imgTag = document.getElementById("resultImg");
+                    var img_src = "data:image/png;base64," + response.image;
+                    imgTag.src = img_src;
 
-                    var img = document.getElementById("resultImg");
-                    var img_src = "data:image/png;base64," + response.image; // 서버로부터 받은 이미지 데이터
-                    img.src = img_src; // 이미지 업데이트
-
-                } else { // 400, 500, 503 오류 처리
-                    // 요청 실패 시 처리
-                    console.error("Error: " + xhr.statusText);
-                    alert("Fail" + xhr.statusText);
+                } else { // 404, 500, 503 오류 처리
+                    console.error("ERROR: " + xhr.statusText);
+                    alert("Fail! " + xhr.statusText);
                 }
-                button.disabled = false; // 요청 완료 후 버튼 활성화
 
+                button.disabled = false;  // 버튼활성화
             }
+
             xhr.onerror = function () {
-                // 네트워크 오류 처리
-                console.error("ERROR" + xhr.statusText);
-                alert("fail" + xhr.statusText);
-                button.disabled = false; // 요청 완료 후 버튼 활성화
+                console.error("ERROR: " + xhr.statusText);
+                alert("fail " + xhr.statusText);
+                button.disabled = false;  // 버튼활성화
             }
-            //xhr로 데이터 전송
+
+            // xhr로 데이터 전송
             xhr.send(form_data);
         });
     </script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous">
-    </script>
-
 </body>
-
 </html>

@@ -27,7 +27,12 @@ namespace ASPWebApp
             app.UseStaticFiles();       // wwwroot 폴더 아래 파일 사용설정
             app.MapControllers();       // MVC중 Controller 매핑
             //app.MapGet("/", () => "Hello World!");
-            
+
+            app.MapGet("/ai", async context =>
+            {
+                context.Response.Redirect("/ai.html");
+            });
+
             app.Run();
         }
     }

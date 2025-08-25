@@ -121,3 +121,85 @@ pip install fastapi uvicorn
 <img src="./pythonAI/step2/result.jpg">
 <br>
 <img src="./pythonAI/step2/result01.jpg">
+
+- 최종 결과
+<img src="/image/mp0021.png">
+
+--- 
+
+##### 주의점
+- index.html의 form태그 내 input은 전부 name이 필요함. Javascript의 입력값 수집객체 FormData() 에서 name 속성 사용함
+- `xhr.open('POST', 'http://localhost:5200/net_service', true);`에서 쓰이는 API NetController 작성 필요
+
+
+### 실시간 웹캠/동영상 물체인식 
+- 여기서는 uvicorn와 FastApi의 웹서비스 사용하지 않음
+- MQTT 웹소캣을 통해서 물체인식하는 실시간 웹캠이나 동영상을 전달하는 예제
+
+#### MQTT 브로커 설정 추가
+- 웹소켓 연결을 위해서 MQTT 브로커 서버에 추가 설정필요
+
+```c
+# 기본 MQTT
+listener 1883
+protocol mqtt
+
+# WebSocket용
+listener 9001
+protocol websockets
+```
+
+```shell
+winget install mosquitto 설치!
+```
+
+#### 파이썬 AI 작성
+- 웹캠 및 동영상 분리
+- 이미지의 경우 base64로 인코딩되어 프레임별로 MQTT 브로커로 전달됨
+
+<img src="../image/mp002.jpg" width="600">
+
+##### 웹캠
+
+[소스](./pythonAi/step3/main01.py)
+
+<img src="/image/mp0022.png" width="600">
+
+##### 동영상
+
+[소스](./pythonAi/step3/main02.py)
+
+<img src="../image/mp0024.jpg" width="600">
+
+
+#### ASP.NET Subscribe Server
+- 이전 소스에서 Program.cs 수정 및 streamming.html만 작성
+
+[소스](./backend/ASPWebSolution/ASPWebApp/Program.cs)
+[소스](./backend/ASPWebSolution/ASPWebApp/wwwroot/streaming.html)
+
+웹캠 결과화면
+
+<img src="../image/mp0025.jpg" width="700">
+
+동영상 결과화면
+
+https://github.com/user-attachments/assets/70a96e30-6dc5-4077-a345-a8ef56810652
+
+
+#### 추가내용
+- yolov8n.pt, yolov8m.pt, yolov9c.pt 중 yolov8n.pt가 처리속도 빠름
+
+| 모델 이름        | 설명          |  특징           |
+| ------------ | ----------- |  ------------ |
+| `yolov8n.pt` | **Nano 모델** | 가장 작고빠름, 속도 우선        |
+| `yolov8s.pt` | Small       | 적당한 속도, 범용           |
+| `yolov8m.pt` | Medium      | 정확도 ↑ 느림      |
+| `yolov8l.pt` | Large       | 고성능 느림      |              |
+| `yolov8x.pt` | Xtreme      | 가장 느림. 연구용 or 서버 전용 |
+| `yolov9c.pt` | Compact   | 작은 모델, 빠름    |
+| `yolov9e.pt` | Efficient | 정확도/속도 밸런스   |
+| `yolov9s.pt` | Small     | YOLOv8s보다 향상 |
+| `yolov9m.pt` | Medium    |              |
+| `yolov9l.pt` | Large     |              |
+| `yolov9x.pt` | Xtreme    | 최고 정확도       |

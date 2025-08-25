@@ -54,7 +54,7 @@ async def index():
     result = detectObjects(image)
     result.save('result01.jpg')
     
-    return { 'message': 'Hello FastAPI' } #, 'result': 'Image saved!' }
+    return { 'message': 'Hello FastAPI yahhh' } #, 'result': 'Image saved!' }
 
 # ASP.NET에서 전달받은 이미지로 객체 인식, 인식결과를 다시 ASP.NET으로 전달
 @app.post('/detect', response_model=DetectionResult)
