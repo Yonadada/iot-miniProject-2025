@@ -123,7 +123,8 @@ pip install fastapi uvicorn
 <img src="./pythonAI/step2/result01.jpg">
 
 - 최종 결과
-<img src="/image/mp0021.png">
+   
+https://github.com/user-attachments/assets/1f75e6d8-c8d6-4612-aecd-cb604597b1c5
 
 --- 
 
