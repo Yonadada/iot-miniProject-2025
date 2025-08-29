@@ -185,7 +185,7 @@ protocol websockets
 
 동영상 결과화면
 
-
+https://github.com/user-attachments/assets/c58c5c14-2966-485f-8caa-cfc31a55fe69
 
 #### 추가내용
 - yolov8n.pt, yolov8m.pt, yolov9c.pt 중 yolov8n.pt가 처리속도 빠름
@@ -209,4 +209,4 @@ protocol websockets
 
 [소스](./pythonAi/step3/main04.py)
 
-<img src="../image/mp0027.jpg" width="650">
+<img src="/image/mp0027.png" width="650">
