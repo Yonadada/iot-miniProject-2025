@@ -139,20 +139,55 @@ AI Server 미실행 시
 - 여기서는 uvicorn와 FastApi의 웹서비스 사용하지 않음
 - MQTT 웹소캣을 통해서 물체인식하는 실시간 웹캠이나 동영상을 전달하는 예제
 
-#### MQTT 브로커 설정 추가
+#### 📡 MQTT 브로커 설정 추가(mosquitto.conf)
 - 웹소켓 연결을 위해서 MQTT 브로커 서버에 추가 설정필요
 
 - 모스키토 config에 아래 추가
+##### 기본 MQTT 프로토콜 (TCP)
 ```c
 # 기본 MQTT
 listener 1883
 protocol mqtt
-
-# WebSocket용
+```
+##### WebSocket 프로토콜 (브라우저용)
+```shell
 listener 9001
 protocol websockets
 ```
+```shell
+allow_anonymous true 
+```
+--- 
+#### 🔧 트러블슈팅
+⚠️ MQTT 연결 문제 해결
 
+- <strong>문제상황</strong>
+> Connection failed: access denied 
+
+- <strong>원인</strong>
+1. 다중 Mosquitto 설치: 여러 경로에 Mosquitto가 설치되어 서로 충돌
+2. 서비스 경로 불일치: Windows 서비스로 등록된 Mosquitto 경로와 실제 설치 경로가 다름
+3. 포트 충돌: 다른 서비스가 1883 또는 9001 포트 사용 중
+
+- <strong>해결방법</strong>
+1. 기존 Mosquitto 완전 제거
+```shell
+# Windows 서비스 중지 및 제거
+net stop mosquitto
+sc delete mosquitto
+
+# 설치된 Mosquitto 프로그램 제거
+# 제어판 > 프로그램 추가/제거에서 Mosquitto 제거
+```
+2. 새로설치
+```shell
+# 1. 최신 Mosquitto 다운로드 및 설치
+# 2. 설치 경로 확인 (예: C:\Program Files\mosquitto\) --> Dev > Tools > Mosquitto 경로 넣음
+# 3. mosquitto.conf 파일 설정
+```
+
+3. 서비스 재등록
+서비스 > Mosquitto broker 시작 
 
 #### 파이썬 AI 작성
 - 웹캠 및 동영상 분리
