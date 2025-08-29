@@ -126,7 +126,9 @@ pip install fastapi uvicorn
    
 https://github.com/user-attachments/assets/1f75e6d8-c8d6-4612-aecd-cb604597b1c5
 
---- 
+AI Server 미실행 시
+
+<img src="../image/mp0022.jpg" width="600">
 
 ##### 주의점
 - index.html의 form태그 내 input은 전부 name이 필요함. Javascript의 입력값 수집객체 FormData() 에서 name 속성 사용함
@@ -140,6 +142,7 @@ https://github.com/user-attachments/assets/1f75e6d8-c8d6-4612-aecd-cb604597b1c5
 #### MQTT 브로커 설정 추가
 - 웹소켓 연결을 위해서 MQTT 브로커 서버에 추가 설정필요
 
+- 모스키토 config에 아래 추가
 ```c
 # 기본 MQTT
 listener 1883
@@ -150,27 +153,24 @@ listener 9001
 protocol websockets
 ```
 
-```shell
-winget install mosquitto 설치!
-```
 
 #### 파이썬 AI 작성
 - 웹캠 및 동영상 분리
 - 이미지의 경우 base64로 인코딩되어 프레임별로 MQTT 브로커로 전달됨
 
-<img src="../image/mp002.jpg" width="600">
+<img src="../image/mp0026.jpg" width="600">
 
 ##### 웹캠
 
 [소스](./pythonAi/step3/main01.py)
 
-<img src="/image/mp0022.png" width="600">
+<img src="/image/mp0023.png" width="600">
+
 
 ##### 동영상
 
 [소스](./pythonAi/step3/main02.py)
-
-<img src="../image/mp0024.jpg" width="600">
+<img src="/image/mp0024.png" width="600">
 
 
 #### ASP.NET Subscribe Server
@@ -181,11 +181,10 @@ winget install mosquitto 설치!
 
 웹캠 결과화면
 
-<img src="../image/mp0025.jpg" width="700">
+<img src="/image/mp0025.png" width="700">
 
 동영상 결과화면
 
-https://github.com/user-attachments/assets/70a96e30-6dc5-4077-a345-a8ef56810652
 
 
 #### 추가내용
@@ -204,3 +203,10 @@ https://github.com/user-attachments/assets/70a96e30-6dc5-4077-a345-a8ef56810652
 | `yolov9m.pt` | Medium    |              |
 | `yolov9l.pt` | Large     |              |
 | `yolov9x.pt` | Xtreme    | 최고 정확도       |
+
+#### 추가내용2
+- 사람영역만 모자이크 처리하는 소스 추가
+
+[소스](./pythonAi/step3/main04.py)
+
+<img src="../image/mp0027.jpg" width="650">

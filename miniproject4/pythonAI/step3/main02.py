@@ -70,7 +70,7 @@ w, h = 640, 360
 
 # 비디오캡쳐 시작 0:웹캠 or 동영상경로
 # cap = cv2.VideoCapture(0)
-cap = cv2.VideoCapture('./data/vietnam_traffic.mp4')
+cap = cv2.VideoCapture('./data/vietnam_traffic.mp4') # 에러발생~! => 파일경로 생각도 안하고 있었음
 # cap.set(cv2.CAP_PROP_FRAME_WIDTH, w)
 # cap.set(cv2.CAP_PROP_FRAME_HEIGHT, h)
 
