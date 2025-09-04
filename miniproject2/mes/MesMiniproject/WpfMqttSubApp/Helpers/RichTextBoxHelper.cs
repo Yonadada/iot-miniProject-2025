@@ -4,6 +4,8 @@ using System.Windows;
 
 namespace WpfMqttSubApp.Helpers
 {
+    // mqtt 구독 메시지를 실시간으로 RichTextBox에 출력하기 위해서 ...
+
     // RichTextBox를 MVVM에서 데이터를 바인딩하려면 RichTextBoxHelper 클래스의 BindableDocument 속성을 
     // 추가적으로 만들어야만 사용할 수 있음. 추후분석 필요
     public static class RichTextBoxHelper
