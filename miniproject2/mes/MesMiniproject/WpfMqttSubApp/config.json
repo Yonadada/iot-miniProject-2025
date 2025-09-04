@@ -1,13 +1,13 @@
 {
   "Database": {
-    "Server": "210.119.12.61",
+    "Server": "192.168.0.2", //210.119.12.61
     "Database": "miniproject",
     "User": "root",
-    "Password": "12345",
+    "Password": "12345"
 
   },
   "Mqtt": {
-    "Broker": "210.119.12.61",
+    "Broker": "192.168.0.2",
     "ClientId": "MesMqttSub",
     "Port": 1883,
     "Topic": "yonadada/sf61/data"

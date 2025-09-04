@@ -123,7 +123,7 @@ namespace WpfMrpSimulatorApp.ViewModels
             SchIdx = 1; // 초기값 설정
 
             // MQTT 초기화
-            brokerHost = "210.119.12.61"; // 본인 ip
+            brokerHost = "192.168.0.2"; // 본인 ip
             clientId = "MONITORING_yonadada";
             mqttSubTopic = "yonadada/sf61/data"; // MQTT 메시지 구독 토픽
             mqttPubTopic = "yonadada/sf61/control"; // MQTT 메시지 발행 토픽

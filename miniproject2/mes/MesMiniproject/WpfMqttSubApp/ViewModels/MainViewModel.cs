@@ -142,11 +142,19 @@ namespace WpfMqttSubApp.ViewModels
                     cmd.Parameters.AddWithValue("@light", data.Light);
                     cmd.Parameters.AddWithValue("@human", data.Human);
 
-                    await cmd.ExecuteNonQueryAsync(); // 이전까지는 cmd.ExecuteNonQuery()
+                    int result = await cmd.ExecuteNonQueryAsync();
+                    //await cmd.ExecuteNonQueryAsync(); // 이전까지는 cmd.ExecuteNonQuery()
+                    Debug.WriteLine($"DB 저장 결과 : {result}행 삽임됨");
+                }
+                else
+                {
+                    Debug.WriteLine("DB서버에 접속되지 않음");
                 }
             }
             catch (Exception ex)
             {
+                Debug.WriteLine($"DB저장 오류 : {ex.Message}");
+                LogText += $"DB저장 오류 : {ex.Message}\n";
                 // TODO : 아무 예외처리 안해도 됨.
             }
 
