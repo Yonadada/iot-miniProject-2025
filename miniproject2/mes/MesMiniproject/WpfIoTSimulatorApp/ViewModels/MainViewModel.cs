@@ -237,6 +237,7 @@ namespace WpfIoTSimulatorApp.ViewModels
             // MQTT로 데이터 잔성
             // 테스트 메세지
             var resultText = result == 1 ? "OK" : "FAIL";
+            // 데이터를 만들어서 발행(Publisher)
             var payload = new CheckResult
             {
                 ClientId = clientId,

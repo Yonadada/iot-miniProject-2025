@@ -97,32 +97,38 @@ namespace WpfMqttSubApp.ViewModels
                 .WithCleanSession(true)
                 .Build();
 
-            // MQTT 접속 후 이벤트처리
-            // 예외처리필요
-            // 1. mqtt 브로커 접속 실패 --> 재연결, mqtt 토픽 구독 실패, json 파싱 실패, 
-
+            // mqtt publisher에서 받은 데이터를 처리하는 이벤트 핸들러 등록
             //이벤트 핸들러
             mqttClient.ConnectedAsync += async e =>
             {
                 LogText += "MQTT 브로커 접속성공!\n";
-                // 연결 이후 구독(Subscribe)
 
-                try
-                {
-                    await mqttClient.SubscribeAsync(mqttTopic);
-                    LogText += $"{mqttTopic} 토픽 구독 완료!\n";
-                }
-                catch (Exception ex)
-                {
-                    LogText += $"{mqttTopic} 토픽 구독 실패 : {ex.Message}\n";
-                }
+                await mqttClient.SubscribeAsync(mqttTopic);
+                LogText += $"{mqttTopic} 토픽 구독 완료!\n";
+
             };
 
+            // 왜 실제로 메시지를 받는 곳이 Subscriber 쪽인가?
+            // 시뮬에서는 메시지를 보냈다고(발행 로그)만 보내고, 실제 메시지를 받는 것은 Subscriber 쪽에서 처리(수신 로그)
             // MQTT 구독메시지 로그출력
             mqttClient.ApplicationMessageReceivedAsync += e =>
             {
                 var topic = e.ApplicationMessage.Topic;
                 var payload = e.ApplicationMessage.ConvertPayloadToString(); // byte 데이터를 UTF-8 문자열로 변환
+
+                // 강제로 예외 발생시키기
+                //if (data.ClientId == null)
+                //{
+                //    throw new ArgumentNullException("ClientId가 null입니다");
+                //}
+                //return Task.CompletedTask;
+
+                //---- JSON 파싱 이유 ----
+                // 1. 구조화된 데이터 처리 2. 문자열 조작의 위험을 줄이고 안전하게 객체에 접근 
+
+                //---- 역직렬화는 ----
+                // 객체   -> JSON 문자열 : 직렬화(Serialization) 메모리 객체를 네트워크로 전송 가능한 문자열로 변환
+                // JSON  -> 객체 : 역직렬화(Deserialization)
 
                 // JSNON 파싱 예외처리
                 try
@@ -136,42 +142,22 @@ namespace WpfMqttSubApp.ViewModels
                     LogText += $"LINENUMBER : {lineCounter++}\n";
                     LogText += $"{payload}\n";
                 }
-                catch (JsonException ex)
-                {
-                    LogText += $"JSON 파싱 오류 : {ex.Message}\n";
-                    LogText += $"{payload}\n";
-                }
                 catch (Exception ex)
                 {
-                    LogText += $"메시지 처리중 오류 : {ex.Message}\n";
+                    LogText += $"메시지 처리 오류: {ex.Message}\n";
+                    LogText += $"원본 데이터: {payload}\n";
                 }
 
                 return Task.CompletedTask;
             };
 
+            // mqtt Subscriber 접속이 끊겼을 때 이벤트 핸들러
             mqttClient.DisconnectedAsync += async e =>
             {
                 LogText += "MQTT 브로커 접속이 끊겼습니다. 5초 후 재연결 시도...\n";
-                await Task.Delay(TimeSpan.FromSeconds(5));
-
-                try
-                {
-                    // 연결 시도 전에 상태 확인
-                    if (mqttClient.IsConnected)
-                    {
-                        LogText += "이미 연결되어 있습니다.\n";
-                        return;
-                    }
-
-                    await mqttClient.ConnectAsync(mqttClientOptions);
-                }
-                catch (Exception ex)
-                {
-                    LogText += $"MQTT 재연결 실패: {ex.Message}\n";
-                }
+                // Publisher쪽에서 재연결을 담당하므로 여기서는 단순 알림만
             };
 
-            // 연결 시도
             try
             {
                 await mqttClient.ConnectAsync(mqttClientOptions);
@@ -180,6 +166,7 @@ namespace WpfMqttSubApp.ViewModels
             {
                 LogText += $"MQTT 접속 실패: {ex.Message}\n";
             }
+
 
         }
 
@@ -256,28 +243,15 @@ namespace WpfMqttSubApp.ViewModels
                 return;
             }
 
-            // 기존 클라있으면 해체 시켜서 정리
-            if(mqttClient != null)
-            {
-                try
-                {
-                    mqttClient.Dispose();
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine($"이전 MQTT 클라이언트 해제 오류: {ex.Message}");
-                }
-                finally
-                {
-                    mqttClient = null;
-                }
-            }
+            // 【간소화】 기존 클라이언트 해제 로직 단순화
+            mqttClient?.Dispose();
+            mqttClient = null;
 
             // MQTT브로커에 접속해서 데이터를 가져오기
             await ConnectMqttBroker();
         }
 
-
+          
         [RelayCommand]
         public async Task ConnectDatabase()
         {
